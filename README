@@ -35,7 +35,7 @@ How to generate all them keys for all my Hosts?
       # SSHHOSTNAME which might have twins as it can be a local ip /ö\
       # SSHHOSTNAME=$(ssh -G $SSHHOST|awk '/^hostname / {print $2}');
       SSHUSER=$(ssh -G $SSHHOST|awk '/^user / {print $2}');
-      ssh-keygen -ted25519 -f ~/.ssh/gpg.d/$SSHUSER@$SSHHOST.ed25519 -C  $SSHUSER@$SSHHOST -P "";
+      ssh-keygen -ted25519 -f ~/.ssh/gpg.d/$SSHUSER@$SSHHOST.ed25519 -C  $SSHUSER@$SSHHOST-$USER -P "";
    done
 
 And how the food could i encrypt them with ease?
