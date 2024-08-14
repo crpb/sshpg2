@@ -24,4 +24,31 @@ Why don't just set passphrase in ``ssh-keygen``?
 What does the name stand for?
    **SSH** keys protected by Gnu\ **PG**, attempt #\ **2**
 
+How to generate all them keys for all my Hosts?
+
+.. code-block:: sh
+
+   # use a subdirectory for a clean ~/.ssh/
+   mkdir -p ~/.ssh/gpgd/; for SSHHOST in $(awk '/^Host / {print $2}'~/.ssh/config); do
+   SSHUSER=$(ssh -G $SSHHOST|awk '/^user / {print $2}');
+   ssh-keygen -ted25519 -f ~/.ssh/gpgd/$SSHUSER@$SSHHOST.ed25519 -C  $SSHUSER@$SSHHOST -P "";
+   done
+
+And how the food could i encrypt them with ease?
+
+.. code-block:: sh
+
+   cd ~/.ssh/gpgd/
+   ls |grep -v \.pub  |xargs gpg --encrypt-files <GPGKEYID>
+
+How could i put all them keys on the correct Host?
+
+.. code-block:: sh
+
+   cd ~/.ssh/gpgd; for PUB in *.pub; do
+   RHOST=${PUB%.ed25519.pub};
+   echo $RHOST; #just so we know..
+   cat ~/.ssh/gpgd/$PUB |ssh -o BatchMode=yes -T $RHOST "cat | tee -a ~/.ssh/authorized_keys";
+   done
+
 .. vim:tw=76 ts=3 sts=3 sw=3 et ft=rst
