@@ -38,8 +38,10 @@ And how the food could i encrypt them with ease?
 
 .. code-block:: sh
 
+   # This could already be done during the generation tho ¯\_(ツ)_/¯
    cd ~/.ssh/gpgd/
    ls |grep -v \.pub  |xargs gpg --encrypt-files <GPGKEYID>
+   ls |grep -v \.pub -v \.gpg |xargs rm
 
 How could i put all them keys on the correct Host?
 
