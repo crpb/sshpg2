@@ -54,3 +54,7 @@ How could i put all them keys on the correct Host?
    done
 
 .. vim:tw=76 ts=3 sts=3 sw=3 et ft=rst
+
+And how do i use those Keys with ``IdentitiesOnly=yes``?
+   ``IdentityFile %d/.ssh/gpgd/%r@%h.ed25519`` will work even w/o the actual
+   key aslong as there is a .pub file.
