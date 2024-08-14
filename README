@@ -29,9 +29,9 @@ How to generate all them keys for all my Hosts?
 .. code-block:: sh
 
    # use a subdirectory for a clean ~/.ssh/
-   mkdir -p ~/.ssh/gpgd/; for SSHHOST in $(awk '/^Host / {print $2}'~/.ssh/config); do
+   mkdir -p ~/.ssh/gpg.d/; for SSHHOST in $(awk '/^Host / {print $2}'~/.ssh/config); do
    SSHUSER=$(ssh -G $SSHHOST|awk '/^user / {print $2}');
-   ssh-keygen -ted25519 -f ~/.ssh/gpgd/$SSHUSER@$SSHHOST.ed25519 -C  $SSHUSER@$SSHHOST -P "";
+   ssh-keygen -ted25519 -f ~/.ssh/gpg.d/$SSHUSER@$SSHHOST.ed25519 -C  $SSHUSER@$SSHHOST -P "";
    done
 
 And how the food could i encrypt them with ease?
@@ -39,7 +39,7 @@ And how the food could i encrypt them with ease?
 .. code-block:: sh
 
    # This could already be done during the generation tho ¯\_(ツ)_/¯
-   cd ~/.ssh/gpgd/
+   cd ~/.ssh/gpg.d/
    ls |grep -v \.pub  |xargs gpg --encrypt-files <GPGKEYID>
    ls |grep -v \.pub -v \.gpg |xargs rm
 
@@ -47,14 +47,14 @@ How could i put all them keys on the correct Host?
 
 .. code-block:: sh
 
-   cd ~/.ssh/gpgd; for PUB in *.pub; do
+   cd ~/.ssh/gpg.d; for PUB in *.pub; do
    RHOST=${PUB%.ed25519.pub};
    echo $RHOST; #just so we know..
-   cat ~/.ssh/gpgd/$PUB |ssh -o BatchMode=yes -T $RHOST "cat | tee -a ~/.ssh/authorized_keys";
+   cat ~/.ssh/gpg.d/$PUB |ssh -o BatchMode=yes -T $RHOST "cat | tee -a ~/.ssh/authorized_keys";
    done
 
 .. vim:tw=76 ts=3 sts=3 sw=3 et ft=rst
 
 And how do i use those Keys with ``IdentitiesOnly=yes``?
-   ``IdentityFile %d/.ssh/gpgd/%r@%h.ed25519`` will work even w/o the actual
+   ``IdentityFile %d/.ssh/gpg.d/%r@%h.ed25519`` will work even w/o the actual
    key aslong as there is a .pub file.

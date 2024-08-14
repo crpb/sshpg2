@@ -15,7 +15,7 @@ then
     exec "$orig_ssh_add" "$@"
 fi
 
-for pubkey in ~/.ssh/gpgd/*.pub
+for pubkey in ~/.ssh/gpg.d/*.pub
 do
     seckey="${pubkey%.pub}.gpg"
     [ -e "$seckey" ] || continue
