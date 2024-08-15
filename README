@@ -57,8 +57,8 @@ How could i put all them keys on the correct Host?
       cat ~/.ssh/gpg.d/$PUB |ssh -o BatchMode=yes -T $RHOST "cat | tee -a ~/.ssh/authorized_keys";
    done
 
-.. vim:tw=76 ts=3 sts=3 sw=3 et ft=rst
-
 And how do i use those Keys with ``IdentitiesOnly=yes``?
    ``IdentityFile %d/.ssh/gpg.d/%r@%k.ed25519`` will work even w/o the actual
    key aslong as there is a .pub file.
+
+.. vim:tw=76 ts=3 sts=3 sw=3 et ft=rst
