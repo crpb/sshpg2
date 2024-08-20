@@ -24,11 +24,14 @@ then
     exec "$orig_ssh_add" "$@"
 fi
 
+START=$(date -u +%s)
 for pubkey in ~/.ssh/gpg.d/*.pub
 do
     seckey="${pubkey%.pub}.gpg"
     [ -e "$seckey" ] || continue
     gpg -q -d < "$seckey" | "$orig_ssh_add" -
 done
+STOP=$(date -u +%s)
+echo "ssh-add: $(( STOP - START ))s"
 
 # vim:ts=4 sts=4 sw=4 et
