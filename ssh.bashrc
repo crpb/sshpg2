@@ -15,6 +15,7 @@ unset agent
 # Create new keys 
 gensshpg2() {
     (
+        umask 077
         set -e
         if [ $# -eq 0 ]; then
             printf "You need to provide a Host\n"
