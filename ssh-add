@@ -11,11 +11,22 @@ orig_ssh_add=$(command -v -p ssh-add) || {
     exit 127
 }
 
+GPGD=$HOME/.ssh/gpg.d
+
 if [ $# -eq 1 ]; then
-    if [ -z "${1%%*.gpg}" ]; then
-        [ -e "$1" ] || return
-        gpg -q -d < "$1" | "$orig_ssh_add" -
-    exit 0
+    if [ -z "${1%%*.gpg}" ] && [ -r "$1" ]; then
+        F="$1";
+    elif [ -z "${1%%*.pub}" ] && [ -r "$1" ]; then
+        F="$GPGD/${1##*/}"; F="${F%.*}.gpg";
+    else
+        F="$GPGD/${1##*/}.ed25519.gpg";
+    fi
+    if ! [ -r "$F" ]; then
+        echo "Could not read file $F"
+        exit 66
+    else
+        gpg -q -d < "$F" | "$orig_ssh_add" -
+        exit 0
     fi
 fi
 
